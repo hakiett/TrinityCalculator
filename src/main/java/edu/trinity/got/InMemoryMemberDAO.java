@@ -11,12 +11,15 @@ public class InMemoryMemberDAO implements MemberDAO {
         return allMembers.stream()
                 .filter(member -> member.id().equals(id))
                 .findFirst();
-        //pass test 1
+        // Pass test 1
     }
 
     @Override
     public Optional<Member> findByName(String name) {
-        return Optional.empty();
+        return allMembers.stream()
+                .filter(member -> member.name().equals(name))
+                .findFirst();
+        // Pass test 2
     }
 
     @Override
