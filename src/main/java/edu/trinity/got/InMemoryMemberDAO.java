@@ -1,6 +1,7 @@
 package edu.trinity.got;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class InMemoryMemberDAO implements MemberDAO {
     private final Collection<Member> allMembers =
@@ -10,8 +11,8 @@ public class InMemoryMemberDAO implements MemberDAO {
     public Optional<Member> findById(Long id) {
         return allMembers.stream()
                 .filter(member -> member.id().equals(id))
-                .findFirst();
-        // Pass test 1
+                .findFirst(); // terminal
+        // Pass
     }
 
     @Override
@@ -19,17 +20,21 @@ public class InMemoryMemberDAO implements MemberDAO {
         return allMembers.stream()
                 .filter(member -> member.name().equals(name))
                 .findFirst();
-        // Pass test 2
+        // Pass
     }
 
     @Override
     public List<Member> findAllByHouse(House house) {
-        return Collections.emptyList();
+        return allMembers.stream()
+                .filter(member -> member.house().equals(house))
+                .collect(Collectors.toList());
+        // Pass
     }
 
     @Override
     public Collection<Member> getAll() {
-        return Collections.emptyList();
+        return allMembers;
+        // Pass
     }
 
     /**
@@ -37,7 +42,11 @@ public class InMemoryMemberDAO implements MemberDAO {
      */
     @Override
     public List<Member> startWithSandSortAlphabetically() {
-        return Collections.emptyList();
+        return allMembers.stream()
+                .filter(member -> member.name().startsWith("S"))
+                .sorted() // natural sort
+                .collect(Collectors.toList());
+        // Pass
     }
 
     /**
@@ -45,7 +54,11 @@ public class InMemoryMemberDAO implements MemberDAO {
      */
     @Override
     public List<Member> lannisters_alphabeticallyByName() {
-        return Collections.emptyList();
+        return allMembers.stream()
+                .filter(member -> member.house().equals(House.LANNISTER)) // enum constant
+                .sorted(Comparator.comparing(Member::name))
+                .collect(Collectors.toList());
+        // Pass
     }
 
     /**
