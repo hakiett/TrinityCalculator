@@ -66,7 +66,11 @@ public class InMemoryMemberDAO implements MemberDAO {
      */
     @Override
     public List<Member> salaryLessThanAndSortByHouse(double max) {
-        return Collections.emptyList();
+        return allMembers.stream()
+                .filter(member -> member.salary() < max)
+                .sorted(Comparator.comparing(Member::house))
+                .collect(Collectors.toList());
+        // Pass
     }
 
     /**
@@ -74,7 +78,14 @@ public class InMemoryMemberDAO implements MemberDAO {
      */
     @Override
     public List<Member> sortByHouseNameThenSortByNameDesc() {
-        return Collections.emptyList();
+        return allMembers.stream()
+                .sorted(Comparator.comparing(Member::house)
+                        // Slide 27
+                        // https://docs.oracle.com/javase/8/docs/api/java/util/Comparator.html#thenComparing-java.util.function.Function-
+                        .thenComparing(Member::name).reversed()) //.reversed() because descending name order
+                .collect(Collectors.toList());
+        // Usually I would make custom comparators but this is a good example of chaining
+        // Pass
     }
 
     /**
@@ -82,7 +93,11 @@ public class InMemoryMemberDAO implements MemberDAO {
      */
     @Override
     public List<Member> houseByDob(House house) {
-        return Collections.emptyList();
+        return allMembers.stream()
+                .filter(member -> member.house().equals(house))
+                .sorted(Comparator.comparing(Member::dob))
+                .collect(Collectors.toList());
+        // Pass
     }
 
     /**
@@ -90,7 +105,11 @@ public class InMemoryMemberDAO implements MemberDAO {
      */
     @Override
     public List<Member> kingsByNameDesc() {
-        return Collections.emptyList();
+        return allMembers.stream()
+                .filter(member -> member.title().equals(Title.KING))
+                .sorted(Comparator.comparing(Member::name).reversed())
+                .collect(Collectors.toList());
+        // Pass
     }
 
     /**
@@ -98,7 +117,12 @@ public class InMemoryMemberDAO implements MemberDAO {
      */
     @Override
     public double averageSalary() {
-        return 0.0;
+        return allMembers.stream()
+                .mapToDouble(Member::salary)
+                .average().getAsDouble();
+        // average() returns OptionalDouble
+        //  So we call getAsDouble() to get the double value
+        // Pass
     }
 
     /**
