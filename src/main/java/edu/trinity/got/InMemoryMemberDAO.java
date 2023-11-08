@@ -153,7 +153,8 @@ public class InMemoryMemberDAO implements MemberDAO {
     @Override
     public boolean anyMembers(House house) {
         return allMembers.stream().anyMatch(member -> member.house().equals(house));
-        // Pass greyjoys() test
+        // greyjoys() test
+        // Pass
     }
 
     /**
@@ -195,6 +196,7 @@ public class InMemoryMemberDAO implements MemberDAO {
         return allMembers.stream()
                 .collect(Collectors.partitioningBy
                         (member -> member.title().equals(Title.KING) || member.title().equals(Title.QUEEN)));
+        // Pass
     }
 
     /**
@@ -204,6 +206,7 @@ public class InMemoryMemberDAO implements MemberDAO {
     public Map<House, List<Member>> membersByHouse() {
         return allMembers.stream()
                 .collect(Collectors.groupingBy(Member::house));
+        // Pass
     }
 
     /**
