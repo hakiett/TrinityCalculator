@@ -121,7 +121,7 @@ public class InMemoryMemberDAO implements MemberDAO {
                 .mapToDouble(Member::salary)
                 .average().getAsDouble();
         // average() returns OptionalDouble
-        //  So we call getAsDouble() to get the double value
+        // So we call getAsDouble() to get the double value
         // Pass
     }
 
@@ -161,7 +161,8 @@ public class InMemoryMemberDAO implements MemberDAO {
      */
     @Override
     public long howMany(House house) {
-        return 0;
+        return allMembers.stream().filter(member -> member.house().equals(house)).count();
+        // Pass
     }
 
     /**
@@ -169,7 +170,11 @@ public class InMemoryMemberDAO implements MemberDAO {
      */
     @Override
     public String houseMemberNames(House house) {
-        return "";
+        return allMembers.stream()
+                .filter(member -> member.house().equals(house))
+                .map(Member::name) // member object stream -> name stream
+                .collect(Collectors.joining(", ")); // add comma and space between names
+        // Pass
     }
 
     /**
@@ -177,7 +182,8 @@ public class InMemoryMemberDAO implements MemberDAO {
      */
     @Override
     public Optional<Member> highestSalary() {
-        return Optional.empty();
+        return allMembers.stream().max(Comparator.comparing(Member::salary));
+        // Pass
     }
 
     /**
@@ -186,7 +192,9 @@ public class InMemoryMemberDAO implements MemberDAO {
      */
     @Override
     public Map<Boolean, List<Member>> royaltyPartition() {
-        return Collections.emptyMap();
+        return allMembers.stream()
+                .collect(Collectors.partitioningBy
+                        (member -> member.title().equals(Title.KING) || member.title().equals(Title.QUEEN)));
     }
 
     /**
@@ -194,7 +202,8 @@ public class InMemoryMemberDAO implements MemberDAO {
      */
     @Override
     public Map<House, List<Member>> membersByHouse() {
-        return Collections.emptyMap();
+        return allMembers.stream()
+                .collect(Collectors.groupingBy(Member::house));
     }
 
     /**
@@ -203,7 +212,9 @@ public class InMemoryMemberDAO implements MemberDAO {
      */
     @Override
     public Map<House, Long> numberOfMembersByHouse() {
-        return Collections.emptyMap();
+        return allMembers.stream()
+                .collect(Collectors.groupingBy(Member::house, Collectors.counting()));
+        // Pass
     }
 
     /**
@@ -211,7 +222,10 @@ public class InMemoryMemberDAO implements MemberDAO {
      */
     @Override
     public Map<House, DoubleSummaryStatistics> houseStats() {
-        return Collections.emptyMap();
+        return allMembers.stream()
+                // https://docs.oracle.com/javase%2F9%2Fdocs%2Fapi%2F%2F/java/util/DoubleSummaryStatistics.html
+                .collect(Collectors.groupingBy(Member::house, Collectors.summarizingDouble(Member::salary)));
+        // Pass
     }
 
 }
