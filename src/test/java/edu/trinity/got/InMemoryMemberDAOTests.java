@@ -46,6 +46,15 @@ public class InMemoryMemberDAOTests {
                 .allMatch(member -> member.house() == House.STARK);
     }
 
+    /**
+     * New Test Method to find all members whose house is Lannister and title is Lord (2 in this case)
+     */
+    @Test
+    void findAllByHouseAndTitle() {
+        List<Member> members = dao.findAllByHouseAndTitle(House.LANNISTER, Title.LORD);
+        assertThat(members).hasSize(2)
+                .allMatch(member -> member.house() == House.LANNISTER && member.title() == Title.LORD);
+    }
     @Test
     void findAllByHouse_notFound() {
         List<Member> members = dao.findAllByHouse(House.GREYJOY);
@@ -212,4 +221,5 @@ public class InMemoryMemberDAOTests {
                         .isCloseTo(66666.66, withinPercentage(0.01))
         );
     }
+
 }

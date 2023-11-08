@@ -31,6 +31,16 @@ public class InMemoryMemberDAO implements MemberDAO {
         // Pass
     }
 
+    /**
+     * New Method to find all members by house and title!
+     */
+    @Override
+    public List<Member> findAllByHouseAndTitle(House house, Title title) {
+        return allMembers.stream()
+                .filter(member -> member.house().equals(house) && member.title().equals(title))
+                .collect(Collectors.toList());
+    }
+
     @Override
     public Collection<Member> getAll() {
         return allMembers;

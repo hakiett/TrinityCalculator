@@ -9,6 +9,11 @@ public interface MemberDAO {
 
     List<Member> findAllByHouse(House house);
 
+    /**
+     * Added method to find all members by house and title
+     */
+    List<Member> findAllByHouseAndTitle(House house, Title title);
+
     Collection<Member> getAll();
 
     List<Member> startWithSandSortAlphabetically();
